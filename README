@@ -1,0 +1,1 @@
+Tweak module's setup to allow folks to use YouTube URLs in regular HTML links without transforming these into inline object embeds.
