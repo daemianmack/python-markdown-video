@@ -184,8 +184,10 @@ class VideoExtension(markdown.Extension):
             r'([^(]|^)http://(www.|)vimeo\.com/(?P<vimeoid>\d+)\S*')
         self.add_inline(md, 'yahoo', Yahoo,
             r'([^(]|^)http://video\.yahoo\.com/watch/(?P<yahoovid>\d+)/(?P<yahooid>\d+)')
+        # http://www.youtube.com/watch?v=R2fwHjLvvk4&feature=rec-LGOUT-exp_stronger_r2-2r-1-HM
+        # http://www.youtube.com/v/0Xfh5iBBh4Y?fs=1&hl=en_US
         self.add_inline(md, 'youtube', Youtube,
-            r'([^("\']|^)http://www\.youtube\.com/watch\?\S*v=(?P<youtubeargs>[A-Za-z0-9_&=-]+)\S*')
+            r'([^("\']|^)http://www\.youtube\.com/(?:watch\?\S*v=|v\/)(?P<youtubeargs>[A-Za-z0-9_&=-]+)\S*')
 
 class Bliptv(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
