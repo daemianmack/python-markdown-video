@@ -135,10 +135,6 @@ u'<p><object data="http://www.gametrailers.com/remote_wrap.php?mid=58079" height
 """
 
 import markdown
-try:
-    from markdown.util import etree
-except:
-    from markdown import etree
 
 version = "0.1.6"
 
@@ -192,6 +188,8 @@ class VideoExtension(markdown.Extension):
         # http://www.youtube.com/v/0Xfh5iBBh4Y?fs=1&hl=en_US
         self.add_inline(md, 'youtube', Youtube,
             r'([^("\']|^)http://www\.youtube\.com/(?:watch\?\S*v=|v\/)(?P<youtubeargs>[A-Za-z0-9_&=-]+)\S*')
+        self.add_inline(md, 'youtube', Youtube,
+            r'([^("\']|^)http://youtu\.be/(?P<youtubeargs>[A-Za-z0-9_&=-]+)\S*')
 
 class Bliptv(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
@@ -242,7 +240,7 @@ class Yahoo(markdown.inlinepatterns.Pattern):
         width = self.ext.config['yahoo_width'][0]
         height = self.ext.config['yahoo_height'][0]
         obj = flash_object(url, width, height)
-        param = etree.Element('param')
+        param = markdown.etree.Element('param')
         param.set('name', 'flashVars')
         param.set('value', "id=%s&vid=%s" % (m.group('yahooid'),
                 m.group('yahoovid')))
@@ -257,20 +255,20 @@ class Youtube(markdown.inlinepatterns.Pattern):
         return flash_object(url, width, height)
 
 def flash_object(url, width, height):
-        obj = etree.Element('object')
+        obj = markdown.etree.Element('object')
         obj.set('type', 'application/x-shockwave-flash')
         obj.set('width', width)
         obj.set('height', height)
         obj.set('data', url)
-        param = etree.Element('param')
+        param = markdown.etree.Element('param')
         param.set('name', 'movie')
         param.set('value', url)
         obj.append(param)
-        param = etree.Element('param')
+        param = markdown.etree.Element('param')
         param.set('name', 'wmode')
         param.set('value', 'opaque')
         obj.append(param)
-        param = etree.Element('param')
+        param = markdown.etree.Element('param')
         param.set('name', 'allowFullScreen')
         param.set('value', 'true')
         obj.append(param)
