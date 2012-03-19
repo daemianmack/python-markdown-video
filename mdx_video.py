@@ -192,8 +192,8 @@ class VideoExtension(markdown.Extension):
         # http://www.youtube.com/v/0Xfh5iBBh4Y?fs=1&hl=en_US
         self.add_inline(md, 'youtube', Youtube,
             r'([^("\']|^)http://www\.youtube\.com/(?:watch\?\S*v=|v\/)(?P<youtubeargs>[A-Za-z0-9_&=-]+)\S*')
-        self.add_inline(md, 'youtube', Youtube,
-            r'([^("\']|^)http://youtu\.be/(?P<youtubeargs>[A-Za-z0-9_&=-]+)\S*')
+        self.add_inline(md, 'youtubeshort', YoutubeShort,
+            r'([^("\']|^)http://youtu\.be/(?P<youtubeargs>.*)\S*')
 
 class Bliptv(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
@@ -252,6 +252,13 @@ class Yahoo(markdown.inlinepatterns.Pattern):
         return obj
 
 class Youtube(markdown.inlinepatterns.Pattern):
+    def handleMatch(self, m):
+        url = 'http://www.youtube.com/v/%s' % m.group('youtubeargs')
+        width = self.ext.config['youtube_width'][0]
+        height = self.ext.config['youtube_height'][0]
+        return flash_object(url, width, height)
+
+class YoutubeShort(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
         url = 'http://www.youtube.com/v/%s' % m.group('youtubeargs')
         width = self.ext.config['youtube_width'][0]
